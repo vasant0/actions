@@ -1,0 +1,18 @@
+name: "@svaj/cleanup-artifacts"
+description: "Cleans up old Github Action Artifacts"
+author: "Chris Svajlenka <chris@svajlenka.com>"
+inputs:
+  maxRetentionAge:
+    description: "How many days of artifacts to keep at most."
+    required: false
+    default: "30"
+  maxArtifactsToKeep:
+    description: "How many total artifacs to keep at most."
+    required: false
+    default: "1000"
+outputs:
+  artifactsRemoved:
+    description: "The number of artifacts removed."
+runs:
+  using: "node12"
+  main: "dist/index.js"

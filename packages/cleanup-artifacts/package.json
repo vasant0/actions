@@ -1,0 +1,70 @@
+{
+  "name": "@svaj/cleanup-artifacts",
+  "version": "0.0.1",
+  "private": false,
+  "description": "A GitHub action to cleanup old artifacts.",
+  "main": "lib/main.js",
+  "files": [
+    "lib"
+  ],
+  "types": "main/main.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "prebuild": "yarn run clean:ts",
+    "clean:ts": "rimraf lib && mkdirp lib",
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "clean:ncc": "rimraf dist && mkdirp dist",
+    "prepack": "yarn run clean:ncc",
+    "pack": "ncc build",
+    "test": "jest",
+    "all": "yarn run format && yarn run build && yarn run pack && yarn test"
+  },
+  "lint-staged": {
+    "src/**/*.{js,json}": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svaj/actions.git",
+    "directory": "packages/cleanup-artifacts"
+  },
+  "bugs": {
+    "url": "https://github.com/svaj/actions/issues"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "setup"
+  ],
+  "author": "Chris Svajlenka <chris@svajlenka.com> (https://svajlenka.com/)",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/github": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.7.12",
+    "@typescript-eslint/parser": "^2.8.0",
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^5.16.0",
+    "eslint-plugin-github": "^2.0.0",
+    "eslint-plugin-jest": "^22.21.0",
+    "jest": "^24.9.0",
+    "mkdirp": "^1.0.3",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.6.4"
+  }
+}
