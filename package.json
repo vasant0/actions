@@ -1,0 +1,48 @@
+{
+  "name": "svaj-actions",
+  "private": true,
+  "description": "Monorepo for my actions",
+  "keywords": [
+    "github",
+    "actions",
+    "ci",
+    "artifacts"
+  ],
+  "repository": "git@github.com:svaj/actions.git",
+  "bugs": {
+    "url": "https://github.com/svaj/actions/issues",
+    "email": "bugs@svajlenka.com"
+  },
+  "author": "Chris Svajlenka <chris@svajlenka.com> (https://svajlenka.com/)",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">12.0.0",
+    "yarn": ">1.9.2"
+  },
+  "scripts": {
+    "audit-all": "lerna run audit-moderate",
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run tsc",
+    "check-all": "concurrently \"npm:format-check\" \"npm:lint\" \"npm:test\" \"npm:build -- -- --noEmit\"",
+    "format": "prettier --write packages/**/*.ts",
+    "format-check": "prettier --check packages/**/*.ts",
+    "lint": "eslint packages/**/*.ts",
+    "new-package": "scripts/create-package.sh",
+    "test": "jest --testTimeout 10000"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.3",
+    "@typescript-eslint/parser": "^2.24.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-github": "^3.4.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "lerna": "^3.20.2",
+    "lint-staged": "^10.0.8",
+    "prettier": "^2.0.1",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  }
+}
