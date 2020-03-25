@@ -1,12 +1,15 @@
 module.exports = {
+  preset: 'ts-jest',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  collectCoverageFrom: ['<rootDir>/packages/*/src/**/*.{js,jsx,ts,tsx}', '!**/node_modules/**', '!**/lib/**', '!**/dist/**'],
+  coverageDirectory: '<rootDir>/coverage',
+  coverageReporters: ['lcov', 'text'],
+  runner: 'jest-runner-tsc',
+  testMatch: ['<rootDir>/packages/*/src/**/*.spec.ts'],
+  reporters: ['default', 'jest-html-reporters'],
+  roots: ['<rootDir>/packages/*', '<rootDir>'],
   clearMocks: true,
-  moduleFileExtensions: ['js', 'ts'],
-  roots: ['<rootDir>/packages'],
   testEnvironment: 'node',
-  testMatch: ['**/__tests__/*.test.ts'],
-  testRunner: 'jest-circus/runner',
-  transform: {
-    '^.+\\.ts$': 'ts-jest'
-  },
-  verbose: true
+  verbose: true,
+  setupFilesAfterEnv: ['jest-allure/dist/setup'],
 }

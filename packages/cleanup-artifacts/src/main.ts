@@ -1,20 +1,32 @@
 import * as core from '@actions/core'
 import {GitHub, context} from '@actions/github'
+import {Octokit} from '@octokit/rest'
+import {Artifact, ActionContext} from './types'
 
 export const ARTIFACTS_PER_PAGE = 100
 
-export const handleArtifacts = ({artifacts, oldestDate}) => {
-  const retainedArtifacts = []
+export const TODAY = new Date()
+
+export const DEFAULT_DATE = new Date()
+DEFAULT_DATE.setDate(TODAY.getDate() - 30)
+
+export interface handledArtifacts {
+  artifactsToRemove: Artifact[]
+  sortedArtifacts: Artifact[]
+}
+
+export const handleArtifacts = ({artifacts = [], oldestDate = DEFAULT_DATE}: {artifacts: Artifact[]; oldestDate: Date}) => {
+  const sortedArtifacts = []
   const artifactsToRemove = []
   for (const artifact of artifacts) {
-    const createdAt = Date.parse(artifact.created_at)
+    const createdAt = new Date(Date.parse(artifact.created_at))
     if (createdAt <= oldestDate) {
       core.debug(`Deleting artifact (id:${artifact.id}) due to age: ${artifact.created_at} is older than ${oldestDate}`)
       artifactsToRemove.push(artifact)
     }
-    retainedArtifacts.push(artifact)
+    sortedArtifacts.push(artifact)
   }
-  return retainedArtifacts
+  return {sortedArtifacts, artifactsToRemove}
 }
 
 async function run(): Promise<void> {
@@ -25,38 +37,37 @@ async function run(): Promise<void> {
     core.info(`Attempting to ensure at most ${maxArtifactsToKeep} artifacts in under ${maxRetentionDays} days.`)
 
     const {
-      token,
       payload: {
         repository: {
           name: repo,
           owner: {login: owner},
         },
       },
-    } = context
+    } = <ActionContext>(<unknown>context)
 
+    const token = process.env.GITHUB_TOKEN || 'default-token'
     const octokit = new GitHub(token)
 
     core.info('Finding artifacts to remove...')
     let moreArtifacts = true
-    let artifactsToRemove = []
     let page = 1
-    const artifactsOptions = octokit.actions.listArtifactsForRepo.endpoint.merge({
+    const artifactsOptions: Artifact[] = octokit.repos.listArtifactsForRepo.endpoint.merge({
       owner,
       repo,
       per_page: ARTIFACTS_PER_PAGE,
     })
     const today = new Date()
     console.info('Iterating over artifacts...')
-    const oldestDate = new Date().setDate(today.getDate() - 30)
-    let curTotal = 0
-    const allArtifacts = await octokit.paginate(artifactsOptions, artifacts => handleArtifacts({artifacts, oldestDate}))
-    if (allArtifacts.length > maxArtifactsToKeep) {
+    const oldestDate = new Date()
+    oldestDate.setDate(today.getDate() - 30)
+    const {artifactsToRemove, sortedArtifacts} = await octokit.paginate(artifactsOptions, artifacts => handleArtifacts({artifacts, oldestDate}))
+    if (sortedArtifacts.length > maxArtifactsToKeep) {
       console.info('Removing artifacts due to limit hit.')
       console.info('Sorting by age')
       console.info('Removing oldest artifacts')
     }
 
-    core.setOutput('artifactsRemoved', artifactsRemoved)
+    core.setOutput('artifactsRemoved', JSON.stringify(artifactsToRemove))
   } catch (error) {
     core.setFailed(error.message)
   }

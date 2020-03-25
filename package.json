@@ -8,6 +8,15 @@
     "ci",
     "artifacts"
   ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/ts-jest",
+      "**/ts-jest/**"
+    ]
+  },
   "repository": "git@github.com:svaj/actions.git",
   "bugs": {
     "url": "https://github.com/svaj/actions/issues",
@@ -21,35 +30,44 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lerna run --concurrency 10 --stream precommit",
+      "pre-commit": "lerna run --parallel precommit && jest --bail --findRelatedTests",
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
     }
   },
   "scripts": {
-    "audit-all": "lerna run audit-moderate",
+    "audit-all": "lerna exec --parallel -- yarn audit --level 4",
     "bootstrap": "lerna bootstrap",
-    "build": "lerna run tsc",
-    "check-all": "concurrently \"npm:format-check\" \"npm:lint\" \"npm:test\" \"npm:build -- -- --noEmit\"",
+    "build": "lerna run --parallel tsc",
+    "check-all": "lerna run --parallel -- check-all",
     "format": "prettier --write packages/**/*.ts",
     "format-check": "prettier --check packages/**/*.ts",
     "lint": "eslint packages/**/*.ts",
     "new-package": "scripts/create-package.sh",
-    "test": "jest --testTimeout 10000"
+    "test": "jest",
+    "test:report": "allure generate"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^8.3.4",
+    "@octokit/webhooks": "^7.1.1",
+    "@types/faker": "^4.1.10",
     "@types/jest": "^25.1.4",
+    "@types/nock": "^11.1.0",
     "@types/node": "^13.9.3",
     "@typescript-eslint/parser": "^2.24.0",
     "commitlint": "^8.3.5",
     "eslint": "^6.8.0",
     "eslint-plugin-github": "^3.4.1",
     "eslint-plugin-jest": "^23.8.2",
+    "faker": "^4.1.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "jest-allure": "^0.1.1",
+    "jest-html-reporters": "^1.2.1",
+    "jest-runner-tsc": "^1.6.0",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
     "mkdirp": "^1.0.3",
+    "nock": "^12.0.3",
     "prettier": "^2.0.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.2.1",

@@ -1,0 +1,64 @@
+name: actions-build
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths-ignore:
+      - "**.md"
+  push:
+    paths-ignore:
+      - "**.md"
+    branches:
+      - master
+      - develop
+    tags:
+      - v*
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+  CI: true
+
+jobs:
+  build:
+    name: Build
+
+    strategy:
+      matrix:
+        runs-on: [ubuntu-latest, macOS-latest, windows-latest]
+      fail-fast: false
+
+    runs-on: ${{ matrix.runs-on }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: yarn install
+        run: yarn install
+
+      - name: Bootstrap
+        run: yarn run bootstrap
+
+      - name: Compile
+        run: yarn run build
+
+      - name: Test
+        run: yarn test
+
+      - name: Lint
+        run: yarn run lint
+
+      - name: Format
+        run: yarn run format-check
+
+      - name: audit tools
+        run: yarn audit --level=4 # 4 = moderate
+        if: matrix.runs-on == 'ubuntu-latest'
+
+      - name: audit packages
+        run: npm run audit-all
+        if: matrix.runs-on == 'ubuntu-latest'

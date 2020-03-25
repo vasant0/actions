@@ -7,10 +7,9 @@
   "files": [
     "lib"
   ],
-  "types": "main/main.d.ts",
+  "types": "lib/main.d.ts",
   "directories": {
-    "lib": "lib",
-    "test": "__tests__"
+    "lib": "lib"
   },
   "publishConfig": {
     "access": "public"
@@ -26,11 +25,14 @@
     "prepack": "yarn run clean:ncc",
     "pack": "ncc build",
     "test": "jest",
+    "test:report": "allure generate",
     "all": "yarn run format && yarn run build && yarn run pack && yarn test"
   },
   "lint-staged": {
     "src/**/*.{js,json}": [
-      "prettier --write"
+      "prettier --write",
+      "yarn run build",
+      "yarn run pack"
     ]
   },
   "repository": {
@@ -46,25 +48,34 @@
     "node",
     "setup"
   ],
+  "jest-runner-tsc": {
+    "tsconfigPath": "../../tsconfig.json"
+  },
   "author": "Chris Svajlenka <chris@svajlenka.com> (https://svajlenka.com/)",
   "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@actions/github": "^2.1.1"
+    "@actions/github": "^2.1.1",
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
+    "@types/nock": "^11.1.0",
     "@types/node": "^12.7.12",
     "@typescript-eslint/parser": "^2.8.0",
     "@zeit/ncc": "^0.20.5",
     "eslint": "^5.16.0",
     "eslint-plugin-github": "^2.0.0",
     "eslint-plugin-jest": "^22.21.0",
+    "faker": "^4.1.0",
     "jest": "^24.9.0",
+    "jest-allure": "^0.1.1",
+    "jest-runner-tsc": "^1.6.0",
     "mkdirp": "^1.0.3",
+    "nock": "^12.0.3",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
-    "ts-jest": "^24.2.0",
+    "ts-jest": "^25.2.1",
     "typescript": "^3.6.4"
   }
 }
