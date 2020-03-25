@@ -30,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lerna run --parallel precommit && jest --bail --findRelatedTests",
+      "pre-commit": "lerna run --parallel precommit",
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
     }
   },
