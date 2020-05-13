@@ -1,6 +1,36 @@
+# Node dependencies
 node_modules
-.DS_Store
-*.log
-lib
-dist
 
+# Any logs generated
+*.log
+
+# Roverage reports and dirs
+*.html
+lib-cov
+coverage
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional eslint cache
+.eslintcache
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Ignore built ts files
+__tests__/runner/*
+lib/**/*
+lib

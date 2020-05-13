@@ -1,7 +1,12 @@
 module.exports = {
   preset: 'ts-jest',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  collectCoverageFrom: ['<rootDir>/packages/*/src/**/*.{js,jsx,ts,tsx}', '!**/node_modules/**', '!**/lib/**', '!**/dist/**'],
+  collectCoverageFrom: [
+    '<rootDir>/packages/*/src/**/*.{js,jsx,ts,tsx}',
+    '!**/node_modules/**',
+    '!**/lib/**',
+    '!**/dist/**',
+  ],
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['lcov', 'text'],
   runner: 'jest-runner-tsc',

@@ -1,13 +1,13 @@
 {
-  "name": "@svaj/cleanup-artifacts",
+  "name": "@svaj/actions-logger",
   "version": "0.0.1",
   "private": false,
-  "description": "A GitHub action to cleanup old artifacts.",
-  "main": "lib/main.js",
+  "description": "A package intended to provide simple logging for github actions.",
+  "main": "lib/index.js",
   "files": [
     "lib"
   ],
-  "types": "lib/main.d.ts",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib"
   },
@@ -26,7 +26,7 @@
     "pack": "ncc build",
     "test": "jest",
     "test:report": "allure generate",
-    "all": "yarn run lint && yarn run build && yarn run pack && yarn test"
+    "all": "yarn run format && yarn run build && yarn run pack && yarn test"
   },
   "lint-staged": {
     "src/**/*.{js,json}": [
@@ -38,7 +38,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/svaj/actions.git",
-    "directory": "packages/cleanup-artifacts"
+    "directory": "packages/actions-logger"
   },
   "bugs": {
     "url": "https://github.com/svaj/actions/issues"
@@ -46,7 +46,9 @@
   "keywords": [
     "actions",
     "node",
-    "setup"
+    "setup",
+    "logging",
+    "github"
   ],
   "jest-runner-tsc": {
     "tsconfigPath": "../../tsconfig.json"
@@ -55,7 +57,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@actions/github": "^2.1.1",
     "tslib": "^1.11.1"
   },
   "devDependencies": {

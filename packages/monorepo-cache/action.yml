@@ -1,0 +1,22 @@
+name: "Monorepo Cache"
+description: "Easy cache action for your yarn/lerna monorepo"
+author: "Chris Svajlenka <chris@svajlenka.com>"
+inputs:
+  saveOrFetch:
+    description: "Save the cache for packages or fetch the cache?"
+    default: "fetch"
+    required: true
+  monorepoType:
+    description: "What type of monorepo is this? [yarn,lerna]"
+    default: "yarn"
+    required: false
+  exclude:
+    description: "What packages to ignore (comma separated)"
+    default: ""
+    required: false
+outputs:
+  cacheFile:
+    description: "Path to the file containing the cache for projects"
+runs:
+  using: "node12"
+  main: "dist/index.js"

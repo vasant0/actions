@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../actions-logger"
+    }
+  ]
+}
