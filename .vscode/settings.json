@@ -14,6 +14,7 @@
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
+  "javascript.implicitProjectConfig.checkJs": true,
   "editor.codeaActionsOnSave.mode": "all",
   "eslint.enable": true,
   "eslint.workingDirectories": [

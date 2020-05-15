@@ -7,12 +7,20 @@ inputs:
     default: "fetch"
     required: true
   monorepoType:
-    description: "What type of monorepo is this? [yarn,lerna]"
-    default: "yarn"
+    description: "What type of monorepo is this? [yarn, lerna, rush, detect]"
+    default: "detecct"
+    required: false
+  packageManager:
+    description: "What package manger is used? [yarn, npm, pnpm, yarn2, detect]"
+    default: "detect"
     required: false
   exclude:
-    description: "What packages to ignore (comma separated)"
+    description: "What packages/projects to ignore (comma separated)"
     default: ""
+    required: false
+  targets:
+    description: "Comma separated list of directories to cache in each package/project"
+    default: "node_modules,.cache,dist,.parcel-cache"
     required: false
 outputs:
   cacheFile:
