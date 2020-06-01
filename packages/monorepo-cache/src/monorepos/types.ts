@@ -8,7 +8,8 @@ export interface MonoRepo {
 
 export enum MonoRepoType {
   lerna = 'lerna',
-  yarn = 'yarn',
+  yarn1 = 'yarn1',
+  yarn2 = 'yarn2',
 
   // TODO add support for these
   rush = 'rush',

@@ -55,7 +55,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@svaj/actions-logger": "*"
+    "@svaj/actions-logger": "*",
+    "n-readlines": "^1.0.0",
+    "semver": "^7.3.2"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",

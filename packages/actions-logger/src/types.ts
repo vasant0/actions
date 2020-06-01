@@ -1,5 +1,5 @@
 // method that usually prints to stdout or stderr
-export type logMethod = () => void
+export type logMethod = (message: string, details: object) => void
 
 /**
  * Action logger type, default propers and unknown props.

@@ -1,20 +1,20 @@
 import path from 'path'
-import fs from 'fs'
+import {existsSync} from 'fs'
 import {MonoRepoCreatorOptions, PackageOutput, MonoRepoCreatorOptionsDefault} from './monorepo'
 import {MonoRepo, MonoRepoType} from './types'
 import {DEFAULT_ROOT_PATH} from './constants'
 import {logger} from '@svaj/actions-logger'
 import {NodePackageManager} from 'src/packagemanagers/types'
 
-export class Lerna implements MonoRepo {
+export class Yarn1Workspaces implements MonoRepo {
   rootPath = DEFAULT_ROOT_PATH
   packages = []
-  type = MonoRepoType.lerna
-  packageManager = NodePackageManager.npm
+  type = MonoRepoType.yarn1
+  packageManager = NodePackageManager.yarn1
   projectPaths = []
 
   runInAllPackages(command: string): PackageOutput[] {
-    // const commandPrefix = this.packageManager.getRunModuleCmd() 'yarn workspaces run'
+    // const commandPrefix = 'yarn workspaces run'
     logger.info('running command in all packages', {command})
     const output = ''
     const pkgPath = path.join(this.rootPath, this.projectPaths[0])
@@ -41,7 +41,7 @@ export class Lerna implements MonoRepo {
   }
 
   constructor(options: MonoRepoCreatorOptions = MonoRepoCreatorOptionsDefault) {
-    if (options.rootPath && fs.existsSync(options.rootPath)) {
+    if (options.rootPath && existsSync(options.rootPath)) {
       this.rootPath = options.rootPath
     }
   }
